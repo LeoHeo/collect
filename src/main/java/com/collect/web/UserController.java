@@ -5,6 +5,7 @@ import com.collect.exception.BadRequestException;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   @PostMapping("/signup")
-  public String signup(@Valid UserSaveDto userSaveDto, BindingResult result) {
-    System.out.println("test");
+  public void signup(@Valid @RequestBody UserSaveDto userSaveDto, BindingResult result) {
     if (result.hasErrors()) {
       throw new BadRequestException("missing required value");
     }
-    return "test";
   }
 }

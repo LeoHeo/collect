@@ -4,11 +4,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.collect.CollectApplication;
+import com.collect.domain.user.Provider;
+import com.collect.domain.user.UserSaveDto;
 import com.collect.security.WebSecurity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,10 +29,62 @@ public class UserControllerTests {
   @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   @Test
   public void 인자가_아무것도_없을때_400() throws Exception {
     this.mockMvc.perform(post("/user/signup"))
         .andExpect(status().isBadRequest());
+  }
 
+  @Test
+  public void 이메일이_유효하지_않을때_400() throws Exception {
+    UserSaveDto userSaveDto = new UserSaveDto();
+    userSaveDto.setEmail("hjh");
+    userSaveDto.setAddress("seoul");
+    userSaveDto.setPassword("123456");
+    userSaveDto.setProvider(Provider.create("test"));
+
+    this.mockMvc.perform(
+          post("/user/signup")
+          .contentType(MediaType.APPLICATION_JSON_UTF8)
+          .content(objectMapper.writeValueAsString(userSaveDto))
+        )
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void provider_유효하지_않을떄_400() throws Exception {
+    UserSaveDto userSaveDto = new UserSaveDto();
+    userSaveDto.setEmail("hjh5488@gmail.com");
+    userSaveDto.setAddress("seoul");
+    userSaveDto.setPassword("123456");
+    userSaveDto.setProvider(Provider.create("test"));
+
+    System.out.println(objectMapper.writeValueAsString(userSaveDto));
+
+    this.mockMvc.perform(
+        post("/user/signup")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(objectMapper.writeValueAsString(userSaveDto))
+        )
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void 모든조건이_유효할때_200() throws Exception {
+    UserSaveDto userSaveDto = new UserSaveDto();
+    userSaveDto.setEmail("hjh5488@gmail.com");
+    userSaveDto.setAddress("seoul");
+    userSaveDto.setPassword("123456");
+    userSaveDto.setProvider(Provider.create("google"));
+
+    this.mockMvc.perform(
+        post("/user/signup")
+          .contentType(MediaType.APPLICATION_JSON_UTF8)
+          .content(objectMapper.writeValueAsString(userSaveDto)))
+        .andExpect(status().isOk()
+    );
   }
 }

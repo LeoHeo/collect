@@ -1,13 +1,9 @@
 package com.collect.domain.user;
 
-import com.collect.utils.Enum;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -16,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
+@Data
 public class UserSaveDto {
 
   @NotNull
@@ -30,7 +26,6 @@ public class UserSaveDto {
   private String address;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
   private Provider provider;
 
   public User toEntity() {
