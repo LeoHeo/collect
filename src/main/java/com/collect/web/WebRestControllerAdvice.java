@@ -1,5 +1,6 @@
 package com.collect.web;
 
+import com.collect.exception.AlreadyRegisterUserException;
 import com.collect.exception.AuthenticationException;
 import com.collect.exception.BadRequestException;
 import com.collect.dto.SimpleMessageDto;
@@ -37,6 +38,12 @@ public class WebRestControllerAdvice {
   @ExceptionHandler(AuthenticationException.class)
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public SimpleMessageDto authenticationException(AuthenticationException ex) {
+    return new SimpleMessageDto(ex.getMessage());
+  }
+
+  @ExceptionHandler(AlreadyRegisterUserException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public SimpleMessageDto alreadyRegisterUserException(AlreadyRegisterUserException ex) {
     return new SimpleMessageDto(ex.getMessage());
   }
 

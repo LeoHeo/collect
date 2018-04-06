@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoderBean() {
+  public BCryptPasswordEncoder passwordEncoderBean() {
     return new BCryptPasswordEncoder();
   }
 
@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Un-secure H2 Database
         .antMatchers("/h2-console/**/**").permitAll()
-
+        .antMatchers(HttpMethod.POST, "/user/signup").permitAll()
         .antMatchers("/auth/**").permitAll()
         .anyRequest().authenticated();
 
@@ -99,6 +99,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             HttpMethod.POST,
             authenticationPath
         )
+//        .antMatchers(
+//            HttpMethod.POST,
+//            "/user/signup"
+//        )
 
         // allow anonymous resource requests
         .and()

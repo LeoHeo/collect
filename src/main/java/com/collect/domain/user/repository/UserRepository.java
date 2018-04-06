@@ -1,5 +1,6 @@
-package com.collect.domain.user;
+package com.collect.domain.user.repository;
 
+import com.collect.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

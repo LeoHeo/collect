@@ -1,5 +1,6 @@
 package com.collect.domain.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,7 +57,13 @@ public class User {
       joinColumns = { @JoinColumn( name = "USER_ID", referencedColumnName = "ID")},
       inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")}
   )
-  private List<Authority> authorities;
+  private List<Authority> authorities = new ArrayList<>();
+
+  public void addAuthority(Authority authority) {
+    authorities.add(authority);
+    authority.getUsers().add(this);
+  }
+
 
   @Builder
   public User(
@@ -76,15 +83,4 @@ public class User {
     this.enabled = enabled;
     this.authorities = authorities;
   }
-
-  //
-//  @Builder
-//  public User(String username, String password, String address,
-//      Provider provider, String email) {
-//    this.username = username;
-//    this.password = password;
-//    this.address = address;
-//    this.provider = provider;
-//    this.email = email;
-//  }
 }

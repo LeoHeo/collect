@@ -1,7 +1,10 @@
 package com.collect.dto.user;
 
+import com.collect.domain.user.Authority;
 import com.collect.domain.user.Provider;
 import com.collect.domain.user.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -35,6 +38,10 @@ public class UserSaveDto {
   @NotNull
   private Provider provider;
 
+  private List<Authority> authorities = new ArrayList<>();
+
+  private boolean enabled = true;
+
   public User toEntity() {
     return User.builder()
         .username(username)
@@ -42,6 +49,8 @@ public class UserSaveDto {
         .address(address)
         .provider(provider)
         .email(email)
+        .authorities(authorities)
+        .enabled(enabled)
         .build();
   }
 }

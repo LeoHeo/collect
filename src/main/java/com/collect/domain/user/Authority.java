@@ -1,5 +1,6 @@
 package com.collect.domain.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,6 +31,5 @@ public class Authority {
   private AuthorityName name;
 
   @ManyToMany(mappedBy = "authorities")
-  private List<User> users;
-
+  private List<User> users = new ArrayList<>();
 }

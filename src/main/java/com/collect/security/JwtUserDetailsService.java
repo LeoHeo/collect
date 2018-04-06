@@ -1,8 +1,7 @@
 package com.collect.security;
 
 import com.collect.domain.user.User;
-import com.collect.domain.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.collect.domain.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
   private final UserRepository userRepository;
 
-  @Autowired
   public JwtUserDetailsService(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
