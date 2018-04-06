@@ -1,6 +1,7 @@
-package com.collect.exception;
+package com.collect.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SingleErrorMessage {
-  private String error;
+@EqualsAndHashCode
+public class SimpleMessageDto {
+  private final String error;
 }

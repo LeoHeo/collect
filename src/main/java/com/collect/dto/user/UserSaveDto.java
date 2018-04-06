@@ -1,9 +1,12 @@
-package com.collect.domain.user;
+package com.collect.dto.user;
 
+import com.collect.domain.user.Provider;
+import com.collect.domain.user.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -12,12 +15,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Data
+@EqualsAndHashCode
+@NoArgsConstructor
 public class UserSaveDto {
 
   @NotNull
-  @Email(message = "invalid email format")
-  private String email;
+  private String username;
 
   @NotNull
   private String password;
@@ -26,14 +29,19 @@ public class UserSaveDto {
   private String address;
 
   @NotNull
+  @Email(message = "invalid username format")
+  private String email;
+
+  @NotNull
   private Provider provider;
 
   public User toEntity() {
     return User.builder()
-        .email(email)
+        .username(username)
         .password(password)
         .address(address)
         .provider(provider)
+        .email(email)
         .build();
   }
 }
