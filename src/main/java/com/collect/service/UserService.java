@@ -26,7 +26,7 @@ public class UserService {
   @Transactional
   public void saveUser(UserSaveDto userSaveDto) {
   userSaveDto.setPassword(bCryptPasswordEncoder.encode(userSaveDto.getPassword()));
-  User findUser = userRepository.findByUsername(userSaveDto.getUsername());
+  User findUser = userRepository.findByEmail(userSaveDto.getEmail());
 
   if (findUser != null) {
     throw new AlreadyRegisterUserException("Already register user");

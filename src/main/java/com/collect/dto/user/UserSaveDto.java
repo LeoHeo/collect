@@ -36,7 +36,7 @@ public class UserSaveDto {
   private String email;
 
   @NotNull
-  private Provider provider;
+  private Provider provider = Provider.GENERAL;
 
   private List<Authority> authorities = new ArrayList<>();
 
