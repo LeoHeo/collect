@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -26,20 +25,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  private JwtAuthenticationEntryPoint unauthorizedHandler;
-
-  @Autowired
-  private JwtTokenUtil jwtTokenUtil;
-
-  @Autowired
-  private JwtUserDetailsService jwtUserDetailsService;
+  private final JwtAuthenticationEntryPoint unauthorizedHandler;
+  private final JwtTokenUtil jwtTokenUtil;
+  private final JwtUserDetailsService jwtUserDetailsService;
 
   @Value("${jwt.header}")
   private String tokenHeader;
 
   @Value("${jwt.route.authentication.path}")
   private String authenticationPath;
+
+  @Autowired
+  public WebSecurityConfig(
+      JwtAuthenticationEntryPoint unauthorizedHandler,
+      JwtTokenUtil jwtTokenUtil,
+      JwtUserDetailsService jwtUserDetailsService
+  ) {
+    this.unauthorizedHandler = unauthorizedHandler;
+    this.jwtTokenUtil = jwtTokenUtil;
+    this.jwtUserDetailsService = jwtUserDetailsService;
+  }
 
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -75,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Un-secure H2 Database
         .antMatchers("/h2-console/**/**").permitAll()
         .antMatchers(HttpMethod.POST, "/user/signup").permitAll()
+        .antMatchers(HttpMethod.POST, "/user/valid/**").permitAll()
         .antMatchers("/auth/**").permitAll()
         .anyRequest().authenticated();
 
@@ -91,7 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  public void configure(WebSecurity web) throws Exception {
+  public void configure(WebSecurity web) {
     // AuthenticationTokenFilter will ignore the below paths
     web
         .ignoring()
@@ -99,11 +105,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             HttpMethod.POST,
             authenticationPath
         )
-//        .antMatchers(
-//            HttpMethod.POST,
-//            "/user/signup"
-//        )
-
         // allow anonymous resource requests
         .and()
         .ignoring()

@@ -42,4 +42,10 @@ public class WebRestControllerAdvice {
   public SimpleMessageDto alreadyRegisterUserException(AlreadyRegisterUserException ex) {
     return new SimpleMessageDto(ex.getMessage());
   }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public SimpleMessageDto illegalArgumentException(IllegalArgumentException ex) {
+    return new SimpleMessageDto(ex.getMessage());
+  }
 }

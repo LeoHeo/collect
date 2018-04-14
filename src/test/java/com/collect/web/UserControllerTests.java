@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.collect.domain.user.Provider;
 import com.collect.dto.user.LoginDto;
 import com.collect.dto.user.UserSaveDto;
+import com.collect.dto.user.ValidEmailDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,7 +83,7 @@ public class UserControllerTests {
         post("/user/signup")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(objectMapper.writeValueAsString(userSaveDto)))
-        .andExpect(status().isOk());
+        .andExpect(status().isCreated());
   }
 
   @Test
@@ -110,5 +111,41 @@ public class UserControllerTests {
           .content(objectMapper.writeValueAsString(loginDto)))
         .andExpect(status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists());
+  }
+
+  @Test
+  public void 유효하지않은_이메일_포맷_체크_400() throws Exception {
+    ValidEmailDto validEmailDto = new ValidEmailDto();
+    validEmailDto.setEmail("hjh");
+
+    this.mockMvc.perform(
+        post("/user/valid/email")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(objectMapper.writeValueAsString(validEmailDto)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void 유효하지않은_이메일_400() throws Exception {
+    ValidEmailDto validEmailDto = new ValidEmailDto();
+    validEmailDto.setEmail("hjh@gg.com");
+
+    this.mockMvc.perform(
+        post("/user/valid/email")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(objectMapper.writeValueAsString(validEmailDto)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void 유효한_이메일_200() throws Exception {
+    ValidEmailDto validEmailDto = new ValidEmailDto();
+    validEmailDto.setEmail("hjh5488@gmail.com");
+
+    this.mockMvc.perform(
+        post("/user/valid/email")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(objectMapper.writeValueAsString(validEmailDto)))
+        .andExpect(status().isOk());
   }
 }

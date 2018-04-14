@@ -1,13 +1,17 @@
 package com.collect.web;
 
 import com.collect.dto.user.UserSaveDto;
+import com.collect.dto.user.ValidEmailDto;
 import com.collect.exception.BadRequestException;
 import com.collect.service.UserService;
 import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,6 +29,7 @@ public class UserController {
   }
 
   @PostMapping("/signup")
+  @ResponseStatus(HttpStatus.CREATED)
   public void signUp(@Valid @RequestBody UserSaveDto userSaveDto, BindingResult result) {
     if (result.hasErrors()) {
       throw new BadRequestException("missing required value");
@@ -32,4 +37,13 @@ public class UserController {
 
     userService.saveUser(userSaveDto);
   }
+
+  @PostMapping(value = "/valid/email", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public void validEmail(@Valid @RequestBody ValidEmailDto validEmailDto, BindingResult result) {
+    if (result.hasErrors()) {
+      throw new BadRequestException("missing required value");
+    }
+    userService.findByEmail(validEmailDto);
+  }
+
 }

@@ -1,10 +1,11 @@
 package com.collect.service;
 
 import com.collect.domain.user.AuthorityName;
-import com.collect.domain.user.repository.AuthorityReposity;
 import com.collect.domain.user.User;
+import com.collect.domain.user.repository.AuthorityReposity;
 import com.collect.domain.user.repository.UserRepository;
 import com.collect.dto.user.UserSaveDto;
+import com.collect.dto.user.ValidEmailDto;
 import com.collect.exception.AlreadyRegisterUserException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,15 +26,24 @@ public class UserService {
 
   @Transactional
   public void saveUser(UserSaveDto userSaveDto) {
-  userSaveDto.setPassword(bCryptPasswordEncoder.encode(userSaveDto.getPassword()));
-  User findUser = userRepository.findByEmail(userSaveDto.getEmail());
+    userSaveDto.setPassword(bCryptPasswordEncoder.encode(userSaveDto.getPassword()));
+    User findUser = userRepository.findByEmail(userSaveDto.getEmail());
 
-  if (findUser != null) {
-    throw new AlreadyRegisterUserException("Already register user");
+    if (findUser != null) {
+      throw new AlreadyRegisterUserException("Already register user");
+    }
+
+    User saveUser = userSaveDto.toEntity();
+    saveUser.addAuthority(authorityReposity.findByName(AuthorityName.ROLE_USER));
+    userRepository.save(saveUser);
   }
 
-  User saveUser = userSaveDto.toEntity();
-  saveUser.addAuthority(authorityReposity.findByName(AuthorityName.ROLE_USER));
-  userRepository.save(saveUser);
-}
+  @Transactional(readOnly = true)
+  public void findByEmail(ValidEmailDto validEmailDto) {
+    User findUser = userRepository.findByEmail(validEmailDto.getEmail());
+
+    if (findUser == null) {
+      throw new IllegalArgumentException("invalid email");
+    }
+  }
 }
