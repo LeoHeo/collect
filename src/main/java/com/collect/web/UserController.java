@@ -39,11 +39,11 @@ public class UserController {
   }
 
   @PostMapping(value = "/valid/email", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public void validEmail(@Valid @RequestBody ValidEmailDto validEmailDto, BindingResult result) {
+  public ValidEmailDto validEmail(@Valid @RequestBody ValidEmailDto validEmailDto, BindingResult result) {
     if (result.hasErrors()) {
       throw new BadRequestException("missing required value");
     }
-    userService.findByEmail(validEmailDto);
+    return userService.findByEmail(validEmailDto);
   }
 
 }

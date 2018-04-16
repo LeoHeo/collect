@@ -39,11 +39,13 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public void findByEmail(ValidEmailDto validEmailDto) {
+  public ValidEmailDto findByEmail(ValidEmailDto validEmailDto) {
     User findUser = userRepository.findByEmail(validEmailDto.getEmail());
 
     if (findUser == null) {
       throw new IllegalArgumentException("invalid email");
     }
+
+    return validEmailDto;
   }
 }

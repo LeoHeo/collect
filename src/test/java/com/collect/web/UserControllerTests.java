@@ -1,6 +1,7 @@
 package com.collect.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.collect.domain.user.Provider;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
@@ -110,7 +112,7 @@ public class UserControllerTests {
           .contentType(MediaType.APPLICATION_JSON_UTF8)
           .content(objectMapper.writeValueAsString(loginDto)))
         .andExpect(status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists());
+        .andExpect(jsonPath("$.token").exists());
   }
 
   @Test
@@ -146,6 +148,7 @@ public class UserControllerTests {
         post("/user/valid/email")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(objectMapper.writeValueAsString(validEmailDto)))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.email").value(validEmailDto.getEmail()));
   }
 }
