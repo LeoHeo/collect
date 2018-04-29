@@ -1,12 +1,11 @@
 package com.collect.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author Heo, Jin Han
  * @since 2018-04-04
  */
+
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -72,8 +72,6 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     }
-
-    logger.debug("test");
 
     chain.doFilter(request, response);
   }

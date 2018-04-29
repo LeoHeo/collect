@@ -3,7 +3,6 @@ package com.collect.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -20,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author Heo, Jin Han
  * @since 2018-03-30
  */
-@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -72,9 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
-        // don't create session
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
         .authorizeRequests()
 
         // Un-secure H2 Database
@@ -82,7 +76,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/user/signup").permitAll()
         .antMatchers(HttpMethod.POST, "/user/valid/**").permitAll()
         .antMatchers("/auth/**").permitAll()
-        .anyRequest().authenticated();
+        .anyRequest()
+        .permitAll()
+        .and()
+          .oauth2Login()
+            .defaultSuccessUrl("/user/signup/social")
+            .failureUrl("/")
+            .permitAll();
 
     // Custom JWT based security filter
     JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);

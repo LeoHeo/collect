@@ -1,6 +1,7 @@
 package com.collect.domain.user.repository;
 
 import com.collect.domain.user.User;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,6 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 2018-03-31
  */
 public interface UserRepository extends JpaRepository<User, Long> {
-  User findByEmail(String email);
-  User findByUsername(String username);
+  Optional<User> findByEmail(String email);
 }

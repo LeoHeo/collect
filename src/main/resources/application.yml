@@ -1,3 +1,5 @@
+
+
 spring:
   h2:
     console:
@@ -13,6 +15,23 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 5d2abdd50839cb329bfb
+            client-secret: 1022a364fbcf21f7500a2d0b7c88f788c0b9886a
+          google:
+            client-id: 582560691285-pngkqbf1locjmmq7hu9cl2nbtcbb0450.apps.googleusercontent.com
+            client-secret: n5bBqrQrqFGM3gfVRM-Jbw15
+          facebook:
+            client-id: 805478719657122
+            client-secret: 9c20ab2c5baa26bad952f7cdf05607c6
+        provider:
+          facebook:
+            user-info-uri: https://graph.facebook.com/v2.12/me?fields=email,name
+
 
 
 jwt:

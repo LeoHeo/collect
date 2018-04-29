@@ -9,6 +9,7 @@ import java.util.stream.Stream;
  */
 public enum Provider {
   GENERAL,
+  GITHUB,
   FACEBOOK,
   GOOGLE;
 

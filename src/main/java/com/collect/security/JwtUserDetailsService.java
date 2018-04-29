@@ -2,16 +2,20 @@ package com.collect.security;
 
 import com.collect.domain.user.User;
 import com.collect.domain.user.repository.UserRepository;
+import java.util.Optional;
+import javax.jws.soap.SOAPBinding.Use;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Heo, Jin Han
+ * @author Heo, Jin han
  * @since 2018-04-05
  */
 @Service
+@Primary
 public class JwtUserDetailsService implements UserDetailsService {
 
   private final UserRepository userRepository;
@@ -22,12 +26,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByEmail(username);
+    Optional<User> findUser = userRepository.findByEmail(username);
 
-    if (user == null) {
+    if (!findUser.isPresent()) {
       throw new UsernameNotFoundException("Not found username: " + username);
     }
 
-    return JwtUserFactory.create(user);
+    return JwtUserFactory.create(findUser.get());
   }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,5 +56,21 @@ public class UserSaveDto {
         .authorities(authorities)
         .enabled(enabled)
         .build();
+  }
+
+  @Builder
+  public UserSaveDto(
+      @NotNull String username,
+      @NotNull String password,
+      @NotNull @Email(
+        regexp = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}",
+        message = "invalid email format"
+      ) String email,
+      @NotNull Provider provider
+  ) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.provider = provider;
   }
 }
