@@ -2,6 +2,7 @@ package com.collect.web;
 
 import com.collect.domain.user.User;
 import com.collect.dto.JwtDto;
+import com.collect.dto.SimpleMessageDto;
 import com.collect.dto.user.UserSaveDto;
 import com.collect.dto.user.ValidEmailDto;
 import com.collect.exception.BadRequestException;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,6 +83,13 @@ public class UserController {
       throw new BadRequestException("missing required value");
     }
     return userService.findByEmail(validEmailDto);
+  }
+
+  @GetMapping("/test/email")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  public SimpleMessageDto sendEmail() {
+    userService.sendEmail();
+    return new SimpleMessageDto("test");
   }
 
 }

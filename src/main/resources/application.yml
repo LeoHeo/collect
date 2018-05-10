@@ -1,5 +1,3 @@
-
-
 spring:
   h2:
     console:
@@ -32,6 +30,9 @@ spring:
           facebook:
             user-info-uri: https://graph.facebook.com/v2.12/me?fields=email,name
 
+
+AWS_ACCESS_KEY_ID:
+AWS_SECRET_KEY:
 
 
 jwt:

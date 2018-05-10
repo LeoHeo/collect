@@ -4,6 +4,10 @@ buildscript {
         jjwtVersion = '0.9.0'
         oauth2ClientVersion = '5.0.3.RELEASE'
         joseVersion = '5.0.4.RELEASE'
+        awsVersion = '1.2.2.RELEASE'
+        awsSesVersion = '1.11.320'
+        minidevVersion = '2.3'
+        awsSdkSesVersion = '2.0.0-preview-9'
     }
     repositories {
         mavenCentral()
@@ -31,6 +35,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('com.h2database:h2')
     compileOnly('org.projectlombok:lombok')
@@ -41,7 +46,12 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: "${oauth2ClientVersion}"
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: "${joseVersion}"
 
+    compile group: 'software.amazon.awssdk', name: 'ses', version: "${awsSdkSesVersion}"
+    compile group: 'net.minidev', name: 'json-smart', version: "${minidevVersion}"
+
 
     // 3rd party
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: "${jjwtVersion}"
+//    compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: "${awsSesVersion}"
+
 }

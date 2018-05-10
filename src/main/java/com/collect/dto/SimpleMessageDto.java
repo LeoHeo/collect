@@ -14,5 +14,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class SimpleMessageDto {
-  private final String error;
+  private final String message;
 }

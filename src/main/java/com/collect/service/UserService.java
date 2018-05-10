@@ -8,6 +8,7 @@ import com.collect.domain.user.repository.UserRepository;
 import com.collect.dto.user.UserSaveDto;
 import com.collect.dto.user.ValidEmailDto;
 import com.collect.exception.AlreadyRegisterUserException;
+import com.collect.utils.AwsSesUtils;
 import java.util.Map;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 
 /**
  * @author Heo, Jin Han
@@ -27,6 +29,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final AuthorityReposity authorityReposity;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final AwsSesUtils awsSesUtils;
 
   @Transactional
   public User saveUser(UserSaveDto userSaveDto) {
@@ -55,7 +58,6 @@ public class UserService {
         : user.getAuthorizedClientRegistrationId();
 
     final boolean isSameProvider = findProvider.equalsIgnoreCase(user.getAuthorizedClientRegistrationId());
-
 
     if (findUser.isPresent() && isSameProvider) {
       return findUser.get();
@@ -91,5 +93,13 @@ public class UserService {
     }
 
     return validEmailDto;
+  }
+
+  public void sendEmail() {
+    final String SUBJECT = "Amazon SES test (AWS SDK for Java)";
+
+    Context context = new Context();
+    context.setVariable("test", "test1111");
+    awsSesUtils.singleEmailRequest("hjh5488@gmail.com", SUBJECT, "forgot-password", context);
   }
 }
