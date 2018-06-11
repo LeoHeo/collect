@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    driver-class-name: com.mysql.jdbc.Driver
+    username: test
+    password: test

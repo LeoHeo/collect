@@ -1,5 +1,6 @@
 package com.collect.domain.user;
 
+import com.collect.domain.order.Order;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -12,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,14 +23,14 @@ import lombok.NoArgsConstructor;
  * @author Heo, Jin Han
  * @since 2018-03-31
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
-@EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
   @Id
   @GeneratedValue
+  @Column(name = "USER_ID")
   private Long id;
 
   @Column(nullable = false, unique = true)
@@ -53,16 +54,19 @@ public class User {
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "USER_AUTHORITY",
-      joinColumns = { @JoinColumn( name = "USER_ID", referencedColumnName = "ID")},
-      inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")}
+      joinColumns = { @JoinColumn( name = "USER_ID")},
+      inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_ID")}
   )
   private List<Authority> authorities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user")
+  private List<Order> orders = new ArrayList<>();
+
 
   public void addAuthority(Authority authority) {
     authorities.add(authority);
     authority.getUsers().add(this);
   }
-
 
   @Builder
   public User(

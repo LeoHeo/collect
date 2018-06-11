@@ -37,6 +37,8 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
 
+    compile 'mysql:mysql-connector-java'
+
     // spring 3rd party
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: "${oauth2ClientVersion}"
     compile group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: "${joseVersion}"

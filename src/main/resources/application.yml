@@ -4,17 +4,17 @@ spring:
   h2:
     console:
       enabled: true
-  jpa:
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    show-sql: true
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL5Dialect
+#  datasource:
+#    url: jbc
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: test
+#    password: test
   security:
     oauth2:
       client:
@@ -32,8 +32,6 @@ spring:
           facebook:
             user-info-uri: https://graph.facebook.com/v2.12/me?fields=email,name
 
-
-
 jwt:
   header: Authorization
   secret: secret
@@ -42,3 +40,5 @@ jwt:
     authentication:
       path: /auth/login
       refresh: /refresh
+server:
+  port: 8082

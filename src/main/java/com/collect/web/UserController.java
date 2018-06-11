@@ -2,6 +2,7 @@ package com.collect.web;
 
 import com.collect.domain.user.User;
 import com.collect.dto.JwtDto;
+import com.collect.dto.SimpleMessageDto;
 import com.collect.dto.user.UserSaveDto;
 import com.collect.dto.user.ValidEmailDto;
 import com.collect.exception.BadRequestException;
@@ -9,7 +10,9 @@ import com.collect.security.CollectAuthenticationUtil;
 import com.collect.service.UserService;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import javax.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -17,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,6 +85,12 @@ public class UserController {
       throw new BadRequestException("missing required value");
     }
     return userService.findByEmail(validEmailDto);
+  }
+
+  @GetMapping("/test")
+  public SimpleMessageDto test(@RequestHeader HttpHeaders headers) {
+    System.out.println("headers: " + headers.toString());
+    return new SimpleMessageDto("가나다라");
   }
 
 }

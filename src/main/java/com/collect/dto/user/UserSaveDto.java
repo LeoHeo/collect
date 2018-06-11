@@ -29,7 +29,6 @@ public class UserSaveDto {
   @NotNull
   private String password;
 
-  @NotNull
   private String address;
 
   @NotNull
